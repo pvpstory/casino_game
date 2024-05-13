@@ -40,7 +40,7 @@ public:
         cout << "Your balance now is: " << player.getMoney() << endl;
     }
 
-     int bet(){
+     int make_bet(){
         int bet = 0;
         cout << "How much would you like to bet" << endl;
         cin >> bet;
@@ -57,9 +57,42 @@ public:
 
 };
 
-class BlackJack(Game){
+class BlackJack: public Game{
 
-}
+
+        void play(){
+            int deck[52] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+                            2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+                            2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+                            2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+            // 11 - Jack, 12 - Queen, 13 - King, 14 - Ace
+
+            int dealer_hand[2];
+            int player_hand[5];
+
+            int bet;
+            bet = make_bet();
+
+            cout << ">>>Starting the round" << endl;
+
+
+
+
+        };
+    int random_card(int deck[]){
+        int deck_index;
+        int card;
+        do{
+            deck_index = rand() % 52;
+        }while(deck[deck_index] == 0);
+
+        card = deck[deck_index];
+        deck[deck_index] = 0;
+        return card;
+    }
+
+
+};
 int main() {
     cout << "Hello, Brother!, what's your name" << endl;
     string name;
