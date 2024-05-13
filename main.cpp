@@ -15,7 +15,6 @@ public:
     void changeMoney(int amount){
         money = money + amount;
     }
-
     float getMoney(){
         return money;
     }
@@ -41,9 +40,26 @@ public:
         cout << "Your balance now is: " << player.getMoney() << endl;
     }
 
+     int bet(){
+        int bet = 0;
+        cout << "How much would you like to bet" << endl;
+        cin >> bet;
+        if (bet <= 0 ){
+            cout << "Not a valid bet" << endl;
+            return 1;
+        }
+        cout << "Your bet is " << bet << "dollars" << endl;
+        return bet;
+    }
+
+
+
 
 };
 
+class BlackJack(Game){
+
+}
 int main() {
     cout << "Hello, Brother!, what's your name" << endl;
     string name;
