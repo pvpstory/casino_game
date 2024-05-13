@@ -123,7 +123,7 @@ class BlackJack: public Game{
                 // implent the wins
             }
             else
-                "Your lose"
+                cout << "Your lose" <<endl;
 
 
 
