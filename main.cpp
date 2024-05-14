@@ -60,7 +60,7 @@ public:
 class BlackJack: public Game{
 
 
-        void play(Player player){
+        void play(Player player){ //ace implementation
             int deck[52] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                             2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                             2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
@@ -154,14 +154,95 @@ class BlackJack: public Game{
 
 
 };
+
+class Ruletka: public Game{
+    void choose_numbers_howmany(int tab[],int howmany){
+
+    }
+
+    void choose_numbers_range(int tab[],int first_number,int last_number){
+        if (last_number == 100){
+            //dozen
+        }
+
+    }
+
+    void choose_color_property(int tab[], char C){
+
+    }
+    void make_ruletka_bet() {
+        int b = 1;
+        cout << "Make your bets" <<endl;\
+
+        while(b != 0){
+            cout <<"0: Exit"<<endl;
+            cout <<"1: Bet on a single number" << endl;
+            cout <<"2: Bet on two vertically/horizontally adjacent numbers (e.g. 14-17 or 8–9)"<<endl;
+            cout << "3: Bet on three consecutive numbers in a horizontal line (e.g. 7-8-9)" << endl;
+            cout <<"4: 1 to 18 numbers" << endl;
+            cout <<"5: 19 to 36 numbers" << endl;
+            cout <<"6: Red numbers" << endl;
+            cout <<"7: Black numbers" <<endl;
+            cout <<"8: Even numbers" << endl;
+            cout <<"9: Odd numbers" << endl;
+            cout <<"10: Dozen bet" <<endl;
+            cin >> b;
+            if (b == 0){
+                // interface()
+            }
+            int tablica[37];
+            switch(b) {
+
+                case 1:
+                    choose_numbers_howmany(tablica,1);
+                    break;
+                case 2:
+                    choose_numbers_howmany(tablica,2);
+                    break;
+                case 3:
+                    choose_numbers_howmany(tablica,3);
+                    break;
+                case 4:
+                    choose_numbers_range(tablica,1,18);
+                    break;
+                case 5:
+                    choose_numbers_range(tablica,19,36);
+                    break;
+                case 6:
+                    choose_color_property(tablica,'R');
+                    break;
+                case 7:
+                    choose_color_property(tablica,'B');
+                    break;
+                case 8:
+                    choose_color_property(tablica,'E');
+                    break;
+                case 9:
+                    choose_numbers_range(tablica,'O');
+                    break;
+
+                case 10:
+                    choose_numbers_range(tablica,0,100);
+                    break;
+
+
+                
+            }
+        }
+
+    }
+    void play(Player player,int bet_amount, int bet_numbers[]){
+
+
+}
+
+};
 int main() {
     cout << "Hello, Brother!, what's your name" << endl;
     string name;
     cin >> name;
 
     Player player(name);
-
-
 
     return 1;
 }
