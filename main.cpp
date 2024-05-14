@@ -32,7 +32,7 @@ public:
             cout << "Congratulations you won: " << amount << " dollars" << endl;
 
         else if(amount < 0)
-            cout << "Unfortunately you lost" << -amount << " dollars" << endl;
+            cout << "Unfortunately you lost: " << amount << " dollars" << endl;
         else
             cout <<"You didn't win or lose" << endl;
 
@@ -60,7 +60,7 @@ public:
 class BlackJack: public Game{
 
 
-        void play(){
+        void play(Player player){
             int deck[52] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                             2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                             2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
@@ -114,27 +114,23 @@ class BlackJack: public Game{
             }
             cout << ">>>Results" << endl;
             cout << "Dealer's hand: " << dealer_hand[0] << " + " <<dealer_hand[1] << endl;
-            int sum_hand2 = dealer_hand[0] + dealer_hand[1];
+            int dealers_sum = dealer_hand[0] + dealer_hand[1];
 
-            if (sum_hand2 > 21)
+            int amount;
+            if(sum_hand == 21){
+                cout << "BlackJack!!!" << endl;
                 cout << "Congratulations you won" << endl;
-            if (sum_hand2 > 21 or sum_hand == 21 or sum_hand > sum_hand2 ){
+                amount = bet * 1.5;
+            }
+            if (dealers_sum > 21 or sum_hand == 21 or sum_hand > dealers_sum ){
                 cout << "Congratulations you won" << endl;
-                // implent the wins
+                amount = bet;
             }
             else
-                cout << "Your lose" <<endl;
+                cout << "Unfortunately you lost" <<endl;
+                amount = -bet;
 
-
-
-
-
-
-
-
-
-
-
+            resultGame(amount,player);
         };
     int random_card(int deck[]){
         int deck_index;
