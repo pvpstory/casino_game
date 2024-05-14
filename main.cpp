@@ -218,7 +218,7 @@ class Ruletka: public Game{
                     choose_color_property(tablica,'E');
                     break;
                 case 9:
-                    choose_numbers_range(tablica,'O');
+                    choose_color_property(tablica,'O');
                     break;
 
                 case 10:
