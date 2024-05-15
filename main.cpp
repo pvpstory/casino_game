@@ -1,7 +1,11 @@
 #include <iostream>
 #include <string>
+#include <string.h>
+
 
 using namespace std;
+
+
 
 class Player {
 
@@ -158,13 +162,41 @@ class BlackJack: public Game{
 class Ruletka: public Game{
     void choose_number(int tab[]){
         int number;
-        cout << "What number would you like to bet on(0-36): " << endl;
+        cout << "What number would you like to bet on(0-36): ";
         cin >> number;
-        if (number )
-
+        if (number < 0 or number > 36){
+            cout << "Your number isn't in the range"<< endl;
+            choose_number(tab);
+        }
+        //not sure if i should use else
+         tab[number] = number;
     }
 
     void choose_property(int tab[]){
+        char property[4];
+        cout << "Would you like to bet on Even or Odd numbers?(Odd,0,Even,E): ";
+        cin >> property;
+        // not sure if it works
+
+        if (strcmp(property,"0") == 0 or strcmp(property,"Odd") == 0){
+            for(int i =0; i < 37; i++){
+                if((i % 2)!= 0){
+                    tab[i] = i;
+                }
+            }
+
+        }
+        else if(strcmp(property,"E") == 0 or strcmp(property,"Even") == 0){
+            for(int i =0; i < 37; i++){
+                if((i % 2) == 0){
+                    tab[i] = i;
+                }
+            }
+        }
+        else{
+            cout << "Your choice isn't Odd,0,Even or E " << endl;
+            choose_property(tab);
+        }
 
 
     }
