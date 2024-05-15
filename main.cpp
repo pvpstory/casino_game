@@ -156,82 +156,91 @@ class BlackJack: public Game{
 };
 
 class Ruletka: public Game{
-    void choose_numbers_howmany(int tab[],int howmany){
+    void choose_number(int tab[]){
+        int number;
+        cout << "What number would you like to bet on(0-36): " << endl;
+        cin >> number;
+        if (number )
 
     }
 
-    void choose_numbers_range(int tab[],int first_number,int last_number){
-        if (last_number == 100){
-            //dozen
-        }
+    void choose_property(int tab[]){
+
 
     }
 
-    void choose_color_property(int tab[], char C){
+    void choose_color(int tab[]){
 
     }
     void make_ruletka_bet() {
         int b = 1;
         cout << "Make your bets" <<endl;\
 
-        while(b != 0){
+        while(b != 10){
             cout <<"0: Exit"<<endl;
             cout <<"1: Bet on a single number" << endl;
-            cout <<"2: Bet on two vertically/horizontally adjacent numbers (e.g. 14-17 or 8–9)"<<endl;
-            cout << "3: Bet on three consecutive numbers in a horizontal line (e.g. 7-8-9)" << endl;
-            cout <<"4: 1 to 18 numbers" << endl;
-            cout <<"5: 19 to 36 numbers" << endl;
-            cout <<"6: Red numbers" << endl;
-            cout <<"7: Black numbers" <<endl;
-            cout <<"8: Even numbers" << endl;
-            cout <<"9: Odd numbers" << endl;
-            cout <<"10: Dozen bet" <<endl;
+            cout <<"2: Bet on a color(Red/Black)" <<endl;
+            cout <<"3: bet on the propetry(Odd/Even)"<<endl;
             cin >> b;
             if (b == 0){
                 // interface()
             }
             int tablica[37];
             switch(b) {
-
+                case 0://interface
+                    break;
                 case 1:
-                    choose_numbers_howmany(tablica,1);
+                    choose_number(tablica);
                     break;
                 case 2:
-                    choose_numbers_howmany(tablica,2);
+                    choose_color(tablica);
                     break;
                 case 3:
-                    choose_numbers_howmany(tablica,3);
+                    choose_property(tablica);
                     break;
-                case 4:
-                    choose_numbers_range(tablica,1,18);
-                    break;
-                case 5:
-                    choose_numbers_range(tablica,19,36);
-                    break;
-                case 6:
-                    choose_color_property(tablica,'R');
-                    break;
-                case 7:
-                    choose_color_property(tablica,'B');
-                    break;
-                case 8:
-                    choose_color_property(tablica,'E');
-                    break;
-                case 9:
-                    choose_color_property(tablica,'O');
-                    break;
-
-                case 10:
-                    choose_numbers_range(tablica,0,100);
-                    break;
-
-
-                
             }
         }
 
     }
     void play(Player player,int bet_amount, int bet_numbers[]){
+    int number_of_numbers = 0;
+    for(int i = 0; i < 37;i++){
+        if (bet_numbers[i] != 0){
+            number_of_numbers++;
+        }
+    }
+    int d;
+    cout << ">>>The game is starting"<<endl;
+    cin >> d;
+    cout << ">>>The Roulete is spinning" << endl;
+    cin >> d;
+
+    int the_winning_number = rand() % 52;
+    cout << "The number is: " << the_winning_number << " " << color <<  endl;
+
+    int amount;
+
+    for(int i = 0; i < 37; i++){
+        if(bet_numbers[i] == the_winning_number){
+            cout << "BlackJack!!!" << endl;
+            cout << "Congratulations you won: " << amount << endl;
+            if (number_of_numbers == 1){
+                amount = bet_amount * 35;
+                break;
+            }
+            else{
+                amount = bet_amount;
+                break;
+            }
+
+        }
+        else{
+            cout << "Unfortunately you lost your bet: " << bet_amount << endl;
+            amount = -bet_amount;
+            break;
+        }
+    }
+    player.changeMoney(amount);
 
 
 }
