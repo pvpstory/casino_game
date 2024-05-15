@@ -174,11 +174,11 @@ class Ruletka: public Game{
 
     void choose_property(int tab[]){
         char property[4];
-        cout << "Would you like to bet on Even or Odd numbers?(Odd,0,Even,E): ";
+        cout << "Would you like to bet on Even or Odd numbers?(Odd,Even,O,E): ";
         cin >> property;
         // not sure if it works
 
-        if (strcmp(property,"0") == 0 or strcmp(property,"Odd") == 0){
+        if (strcmp(property,"O") == 0 or strcmp(property,"Odd") == 0){
             for(int i =0; i < 37; i++){
                 if((i % 2)!= 0){
                     tab[i] = i;
@@ -194,7 +194,7 @@ class Ruletka: public Game{
             }
         }
         else{
-            cout << "Your choice isn't Odd,0,Even or E " << endl;
+            cout << "Your choice isn't Odd,Even or O,E " << endl;
             choose_property(tab);
         }
 
@@ -202,6 +202,29 @@ class Ruletka: public Game{
     }
 
     void choose_color(int tab[]){
+        char color[4];
+        cout << "Choose the color(Red,Black,R,B): ";
+        //finish later
+        cin >> color;
+        if (strcmp(color,"R") == 0 or strcmp(color,"Red") == 0){
+            for(int i =0; i < 37; i++){
+                if((i % 2)!= 0){
+                    tab[i] = i;
+                }
+            }
+
+        }
+        else if(strcmp(color,"B") == 0 or strcmp(color,"Black") == 0){
+            for(int i =0; i < 37; i++){
+                if((i % 2) == 0){
+                    tab[i] = i;
+                }
+            }
+        }
+        else{
+            cout << "Your choice isn't Red,Black or R,B " << endl;
+            choose_color(tab);
+        }
 
     }
     void make_ruletka_bet() {
