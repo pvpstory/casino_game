@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <string.h>
+#include <cstdlib>
+#include <ctime>
 
 
 using namespace std;
@@ -13,6 +15,7 @@ public:
     Player(string name) : name(name) {
         int lb = 200;
         int ub = 1000;
+        srand(time(0));
         money = (rand() % (ub - lb + 1)) + lb;
     }
 
@@ -31,7 +34,7 @@ private:
 
 class Game{
 public:
-    void resultGame(int amount,Player player){
+    void resultGame(int amount,Player &player){
         if (amount > 0)
             cout << "Congratulations you won: " << amount << " dollars" << endl;
 
@@ -52,7 +55,7 @@ public:
             cout << "Not a valid bet" << endl;
             return 1;
         }
-        cout << "Your bet is " << bet << "dollars" << endl;
+        cout << "Your bet is " << bet << " dollars" << endl;
         return bet;
     }
 
@@ -62,9 +65,8 @@ public:
 };
 
 class BlackJack: public Game{
-
-
-        void play(Player player){ //ace implementation
+public:
+        void play(Player &player){ //ace implementation
             int deck[52] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                             2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                             2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
@@ -121,18 +123,24 @@ class BlackJack: public Game{
             int dealers_sum = dealer_hand[0] + dealer_hand[1];
 
             int amount;
-            if(sum_hand == 21){
+            if(sum_hand == dealers_sum || (dealers_sum > 21 && sum_hand > 21)){
+                cout << "Tie, your hands are equal"<< endl;
+                amount = 0 ;
+            }
+            else if(sum_hand == 21){
                 cout << "BlackJack!!!" << endl;
-                cout << "Congratulations you won" << endl;
+                cout << "Congratulations you won" << endl; //deleete later
                 amount = bet * 1.5;
             }
-            if (dealers_sum > 21 or sum_hand == 21 or sum_hand > dealers_sum ){
-                cout << "Congratulations you won" << endl;
+            else if (dealers_sum > 21 || (sum_hand > dealers_sum && sum_hand < 21) ){
+                cout << "Congratulations you won" << endl; // delete later
                 amount = bet;
             }
-            else
-                cout << "Unfortunately you lost" <<endl;
+            else{
+                cout << "Unfortunately you lost" <<endl; // delete later
                 amount = -bet;
+            }
+
 
             resultGame(amount,player);
         };
@@ -145,9 +153,10 @@ class BlackJack: public Game{
 
         card = deck[deck_index];
         deck[deck_index] = 0;
-        if(card = 14)
-            /////////////////implemnt
-            return 0;
+        return card;
+//        if(card = 14)
+//            /////////////////implemnt
+//            return 0;
 
         if (card > 10){
             card = 10;
@@ -201,33 +210,33 @@ class Ruletka: public Game{
 
     }
 
-    void choose_color(int tab[]){
-        char color[4];
-        cout << "Choose the color(Red,Black,R,B): ";
-        //finish later
-        cin >> color;
-        if (strcmp(color,"R") == 0 or strcmp(color,"Red") == 0){
-            for(int i =0; i < 37; i++){
-                if((i % 2)!= 0){
-                    tab[i] = i;
-                }
-            }
-
-        }
-        else if(strcmp(color,"B") == 0 or strcmp(color,"Black") == 0){
-            for(int i =0; i < 37; i++){
-                if((i % 2) == 0){
-                    tab[i] = i;
-                }
-            }
-        }
-        else{
-            cout << "Your choice isn't Red,Black or R,B " << endl;
-            choose_color(tab);
-        }
-
-    }
-    void make_ruletka_bet() {
+//    void choose_color(int tab[]){
+//        char color[4];
+//        cout << "Choose the color(Red,Black,R,B): ";
+//        //finish later
+//        cin >> color;
+//        if (strcmp(color,"R") == 0 or strcmp(color,"Red") == 0){
+//            for(int i =0; i < 37; i++){
+//                if((i % 2)!= 0){
+//                    tab[i] = i;
+//                }
+//            }
+//
+//        }
+//        else if(strcmp(color,"B") == 0 or strcmp(color,"Black") == 0){
+//            for(int i =0; i < 37; i++){
+//                if((i % 2) == 0){
+//                    tab[i] = i;
+//                }
+//            }
+//        }
+//        else{
+//            cout << "Your choice isn't Red,Black or R,B " << endl;
+//            choose_color(tab);
+//        }
+//
+//    }
+    int* make_ruletka_bet() {
         int b = 1;
         cout << "Make your bets" <<endl;\
 
@@ -237,21 +246,21 @@ class Ruletka: public Game{
             cout <<"2: Bet on a color(Red/Black)" <<endl;
             cout <<"3: bet on the propetry(Odd/Even)"<<endl;
             cin >> b;
-            if (b == 0){
-                // interface()
-            }
+
             int tablica[37];
             switch(b) {
                 case 0://interface
                     break;
                 case 1:
                     choose_number(tablica);
+                    return tablica;
                     break;
                 case 2:
-                    choose_color(tablica);
+                    //choose_color(tablica);
                     break;
                 case 3:
                     choose_property(tablica);
+                    return tablica;
                     break;
             }
         }
@@ -270,31 +279,30 @@ class Ruletka: public Game{
     cout << ">>>The Roulete is spinning" << endl;
     cin >> d;
 
-    int the_winning_number = rand() % 52;
-    cout << "The number is: " << the_winning_number << " " << color <<  endl;
+    int the_winning_number = rand() % 36;
+    cout << "The number is: " << the_winning_number <<endl; //" " << color <<  endl;
 
     int amount;
+    int cof;
+    if(number_of_numbers == 1){
+        cof = 35;
 
-    for(int i = 0; i < 37; i++){
-        if(bet_numbers[i] == the_winning_number){
-            cout << "BlackJack!!!" << endl;
-            cout << "Congratulations you won: " << amount << endl;
-            if (number_of_numbers == 1){
-                amount = bet_amount * 35;
-                break;
-            }
-            else{
-                amount = bet_amount;
-                break;
-            }
-
-        }
-        else{
-            cout << "Unfortunately you lost your bet: " << bet_amount << endl;
-            amount = -bet_amount;
-            break;
-        }
     }
+    else{
+        cof = 1;
+    }
+
+
+    if(bet_numbers[the_winning_number] == the_winning_number) {
+        amount = bet_amount * cof;
+        cout << "Congratulations you won your bet: " << amount << endl;
+    }
+    else{
+        cout << "Unfortunately you lost your bet: " << bet_amount << endl;
+        amount = -bet_amount;
+
+    }
+
     player.changeMoney(amount);
 
 
@@ -305,8 +313,30 @@ int main() {
     cout << "Hello, Brother!, what's your name" << endl;
     string name;
     cin >> name;
-
     Player player(name);
+    //interface
+    int b;
+    while(b != 6 || player.getMoney() <= 0){
+        cout << "Interface: " << endl;
+        cout <<"1: Play BlackJack" << endl;
+        cout <<"2: Play Roulette" << endl;
+        cout <<"3: Play Slot Machine" << endl;
+        cout <<"4: Show my balance" << endl;
+        cout <<"5: Show top players" << endl;
+        cin >> b;
+        switch(b){
+            case 1:
+                BlackJack blackjack;
+                blackjack.play(player);
+                break;
+            case 4:
+                cout <<"Your balance: " << player.getMoney() <<endl;
+                break;
+        }
+    }
+
+
+
 
     return 1;
 }
