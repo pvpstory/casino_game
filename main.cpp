@@ -170,6 +170,7 @@ public:
 };
 
 class Ruletka: public Game{
+public:
     void choose_number(int tab[]){
         int number;
         cout << "What number would you like to bet on(0-36): ";
@@ -183,12 +184,12 @@ class Ruletka: public Game{
     }
 
     void choose_property(int tab[]){
-        char property[4];
+        char property[100];
         cout << "Would you like to bet on Even or Odd numbers?(Odd,Even,O,E): ";
         cin >> property;
         // not sure if it works
 
-        if (strcmp(property,"O") == 0 or strcmp(property,"Odd") == 0){
+        if (strcmp(property,"O") == 0 || strcmp(property,"Odd") == 0){
             for(int i =0; i < 37; i++){
                 if((i % 2)!= 0){
                     tab[i] = i;
@@ -196,7 +197,7 @@ class Ruletka: public Game{
             }
 
         }
-        else if(strcmp(property,"E") == 0 or strcmp(property,"Even") == 0){
+        else if(strcmp(property,"E") == 0 || strcmp(property,"Even") == 0){
             for(int i =0; i < 37; i++){
                 if((i % 2) == 0){
                     tab[i] = i;
@@ -239,7 +240,8 @@ class Ruletka: public Game{
 //    }
     int* make_ruletka_bet() {
         int b = 1;
-        cout << "Make your bets" <<endl;\
+        cout << "Make your bets" <<endl;
+        int* tablica = new int[37]();
 
         while(b != 10){
             cout <<"0: Exit"<<endl;
@@ -248,9 +250,10 @@ class Ruletka: public Game{
             cout <<"3: bet on the propetry(Odd/Even)"<<endl;
             cin >> b;
 
-            int tablica[37];
+
             switch(b) {
                 case 0://interface
+                    delete[] tablica;
                     break;
                 case 1:
                     choose_number(tablica);
@@ -267,13 +270,18 @@ class Ruletka: public Game{
         }
 
     }
-    void play(Player player,int bet_amount, int bet_numbers[]){
-    int number_of_numbers = 0;
-    for(int i = 0; i < 37;i++){
-        if (bet_numbers[i] != 0){
-            number_of_numbers++;
+
+    void play(Player &player){
+        int* bet_numbers = make_ruletka_bet();
+        int number_of_numbers = 0;
+
+        for (int i = 0; i < 36; ++i) {
+            if (bet_numbers[i] != 0)
+                number_of_numbers++;
         }
-    }
+        cout << "number_of_numbers: " << number_of_numbers <<endl;
+        int bet_amount = make_bet();
+
     int d;
     cout << ">>>The game is starting"<<endl;
     cin >> d;
@@ -303,9 +311,8 @@ class Ruletka: public Game{
         amount = -bet_amount;
 
     }
-
-    player.changeMoney(amount);
-
+    delete[] bet_numbers;
+    resultGame(amount,player);
 
 }
 
@@ -332,7 +339,8 @@ int main() {
                 blackjack.play(player);
                 break;
             case 2:
-
+                Ruletka ruletka;
+                ruletka.play(player); //something is wrong with memory
                 break;
             case 4:
                 cout <<"Your balance: " << player.getMoney() <<endl;
