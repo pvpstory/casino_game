@@ -109,7 +109,7 @@ public:
                     break;
                 }
                 player_hand[current_index] = random_card(deck);
-                int sum_hand = player_hand[0] + player_hand[1] + player_hand[2] + player_hand[3] + player_hand[4];
+                sum_hand = player_hand[0] + player_hand[1] + player_hand[2] + player_hand[3] + player_hand[4];
                 cout << "Your hand: " << player_hand[0];
                 for(int i = 1; i <= current_index;i++){
                     cout << " + ";
@@ -121,6 +121,7 @@ public:
             cout << ">>>Results" << endl;
             cout << "Dealer's hand: " << dealer_hand[0] << " + " <<dealer_hand[1] << endl;
             int dealers_sum = dealer_hand[0] + dealer_hand[1];
+            sum_hand = player_hand[0] + player_hand[1] + player_hand[2] + player_hand[3] + player_hand[4];
 
             int amount;
             if(sum_hand == dealers_sum || (dealers_sum > 21 && sum_hand > 21)){
@@ -323,14 +324,21 @@ int main() {
         cout <<"3: Play Slot Machine" << endl;
         cout <<"4: Show my balance" << endl;
         cout <<"5: Show top players" << endl;
+        cout <<"6: Exit" << endl;
         cin >> b;
         switch(b){
             case 1:
                 BlackJack blackjack;
                 blackjack.play(player);
                 break;
+            case 2:
+
+                break;
             case 4:
                 cout <<"Your balance: " << player.getMoney() <<endl;
+                break;
+            case 6:
+                cout <<">>>Exiting" << endl;
                 break;
         }
     }
