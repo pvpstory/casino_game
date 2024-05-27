@@ -3,6 +3,8 @@
 #include <string.h>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
+#include <unordered_map>
 
 
 using namespace std;
@@ -63,7 +65,97 @@ public:
 
 
 };
+class SlotMachine: public Game{
+public:
+    string getRandomSymbol(const std::vector<std::pair<std::string, int>>& symbols) {
+        int totalWeight = 0;
+        for (const auto& symbol : symbols) {
+            totalWeight += symbol.second;
+        }
 
+        int randomValue = rand() % totalWeight;
+        int cumulativeWeight = 0;
+
+        for (const auto& symbol : symbols) {
+            cumulativeWeight += symbol.second;
+            if (randomValue < cumulativeWeight) {
+                return symbol.first;
+            }
+        }
+
+        return symbols.back().first; // Fallback, should not reach here
+    }
+    int makespin(){
+        vector<std::pair<std::string, int>> symbols = {
+                {"🍋", 30}, // Common
+                {"🍌", 30}, // Common
+                {"🍒", 20}, // Uncommon
+                {"♥️", 20}, // Uncommon
+                {"♣️", 10}, // Rare
+                {"♦️", 10}, // Rare
+                {"💎", 5},  // Very rare
+                {"👑", 2}   // Very rare
+        };
+        unordered_map<std::string, int> payouts = {
+                {"🍋", 1},
+                {"🍌", 1},
+                {"🍒", 2},
+                {"♥️", 2},
+                {"♣️", 3},
+                {"♦️", 3},
+                {"💎", 5},
+                {"👑", 10}
+        };
+        // Populate the slot line with random symbols
+        vector<std::string> slotLine(3);
+        for (int i = 0; i < 3; i++) {
+            slotLine[i] = getRandomSymbol(symbols);
+        }
+        for (const auto& symbol : slotLine) {
+            std::cout << symbol << " ";
+        }
+        std::cout << std::endl;
+        cout << endl;
+        int payout = 0;
+        if (slotLine[0] == slotLine[1] && slotLine[1] == slotLine[2]) {
+            // Three of a kind
+            payout = payouts[slotLine[0]] * payouts[slotLine[0]] * payouts[slotLine[0]];
+            std::cout << "You win! Three " << slotLine[0] << "s in a line. Payout: " << payout << "x" << std::endl;
+        } else if (slotLine[0] == slotLine[1]) {
+            // First two symbols match
+            payout = payouts[slotLine[0]];
+            std::cout << "You win! The first two symbols are the same: " << slotLine[0] << ". Payout: " << payout << "x" << std::endl;
+        } else {
+            std::cout << "You lose. No matching symbols." << std::endl;
+        }
+        return payout;
+    }
+    void play(Player &player){
+
+
+
+        int bet = make_bet();
+        int b = -1;
+        while(b != 0 ){
+            cout << "Starting the game" << endl;
+            cout << "0: Exit " << endl;
+            cout <<"1: make a spin" << endl;
+            cin >> b;
+            switch(b){
+                case(0):
+                    b = 0;
+                    break;
+                case(1): int amount = makespin() * bet;
+                    resultGame(amount,player);
+                    break;
+
+            }
+
+
+
+        }
+    }
+};
 class BlackJack: public Game{
 public:
         void play(Player &player){ //ace implementation
@@ -243,7 +335,7 @@ public:
         cout << "Make your bets" <<endl;
         int* tablica = new int[37]();
 
-        while(b != 10){
+        while(b != 0){
             cout <<"0: Exit"<<endl;
             cout <<"1: Bet on a single number" << endl;
             cout <<"2: Bet on a color(Red/Black)" <<endl;
@@ -258,13 +350,16 @@ public:
                 case 1:
                     choose_number(tablica);
                     return tablica;
+                    delete[] tablica;
                     break;
                 case 2:
                     //choose_color(tablica);
                     break;
                 case 3:
                     choose_property(tablica);
+
                     return tablica;
+                    delete[] tablica;
                     break;
             }
         }
@@ -341,6 +436,10 @@ int main() {
             case 2:
                 Ruletka ruletka;
                 ruletka.play(player); //something is wrong with memory
+                break;
+            case 3:
+                SlotMachine slot;
+                slot.play(player);
                 break;
             case 4:
                 cout <<"Your balance: " << player.getMoney() <<endl;
