@@ -5,6 +5,10 @@
 #include <ctime>
 #include <vector>
 #include <unordered_map>
+#include <limits>
+#include <fstream>
+#include <algorithm>
+
 
 
 using namespace std;
@@ -26,6 +30,9 @@ public:
     }
     float getMoney(){
         return money;
+    }
+    string getName(){
+        return name;
     }
 
 
@@ -124,10 +131,11 @@ public:
         } else if (slotLine[0] == slotLine[1]) {
             // First two symbols match
             payout = payouts[slotLine[0]];
-            std::cout << "You win! The first two symbols are the same: " << slotLine[0] << ". Payout: " << payout << "x" << std::endl;
+            std::cout << "You win! The first two symbols are the same: " << slotLine[0] << ". Payout: " << payout+1<< "x" << std::endl;
         } else {
             std::cout << "You lose. No matching symbols." << std::endl;
         }
+
         return payout;
     }
     void play(Player &player){
@@ -136,18 +144,43 @@ public:
 
         int bet = make_bet();
         int b = -1;
-        while(b != 0 ){
+        while(b != 0 and player.getMoney() > 0){
             cout << "Starting the game" << endl;
             cout << "0: Exit " << endl;
             cout <<"1: make a spin" << endl;
+            cout <<"2: Change the bet"<<endl;
             cin >> b;
+            if (cin.fail()) {
+                cout << "Invalid input. Please enter a valid option." << endl;
+                // Clear the error flag on cin
+                cin.clear();
+                // Ignore the rest of the line up to the maximum number of characters in a stream
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue; // Skip the rest of the loop and prompt again
+            }
+            if(b != 2 and b != 0 and b != 1){
+                cout <<"Not a valid option"<<endl;
+            }
+
             switch(b){
+                case(2): bet = make_bet();
+                    break;
                 case(0):
                     b = 0;
                     break;
-                case(1): int amount = makespin() * bet;
+                case(1):
+                    if (player.getMoney() < bet){
+                        cout <<"Your balance is not enough, lower the bet or exit the game"<<endl;
+                        break;
+                    }
+                    int amount = makespin() * bet;
+                        if (amount == 0){
+                            amount = -bet;
+                        }
+
                     resultGame(amount,player);
                     break;
+
 
             }
 
@@ -412,11 +445,65 @@ public:
 }
 
 };
+class Casino {
+private:
+    pair<string, float> topPlayers[100];
+    int currentSize;
+    const string topPlayersFile = "top_players.txt";
+
+public:
+    Casino() : currentSize(0) {
+        loadTopPlayers();
+    }
+
+    ~Casino() {
+        saveTopPlayers();
+    }
+
+    void updateTopPlayers(Player &player) {
+        if (currentSize < 100) {
+            topPlayers[currentSize++] = {player.getName(), player.getMoney()};
+        } else {
+            topPlayers[99] = {player.getName(), player.getMoney()};
+        }
+        sort(topPlayers, topPlayers + currentSize, [](const auto& a, const auto& b) {
+            return a.second > b.second;
+        });
+        if (currentSize > 100) {
+            currentSize = 100;
+        }
+    }
+
+    void loadTopPlayers() {
+        ifstream file(topPlayersFile);
+        string name;
+        float money;
+        currentSize = 0;
+        while (file >> name >> money && currentSize < 100) {
+            topPlayers[currentSize++] = {name, money};
+        }
+    }
+
+    void saveTopPlayers() {
+        ofstream file(topPlayersFile);
+        for (int i = 0; i < currentSize; ++i) {
+            file << topPlayers[i].first << " " << topPlayers[i].second << endl;
+        }
+    }
+
+    void showTopPlayers() {
+        for (int i = 0; i < currentSize; ++i) {
+            cout << topPlayers[i].first << ": " << topPlayers[i].second << endl;
+        }
+    }
+};
 int main() {
     cout << "Hello, Brother!, what's your name" << endl;
     string name;
     cin >> name;
     Player player(name);
+    Casino casino;
+
     //interface
     int b;
     while(b != 6 || player.getMoney() <= 0){
@@ -428,6 +515,14 @@ int main() {
         cout <<"5: Show top players" << endl;
         cout <<"6: Exit" << endl;
         cin >> b;
+        if (cin.fail()) {
+            cout << "Invalid input. Please enter a valid option." << endl;
+            // Clear the error flag on cin
+            cin.clear();
+            // Ignore the rest of the line up to the maximum number of characters in a stream
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue; // Skip the rest of the loop and prompt again
+        }
         switch(b){
             case 1:
                 BlackJack blackjack;
@@ -444,9 +539,19 @@ int main() {
             case 4:
                 cout <<"Your balance: " << player.getMoney() <<endl;
                 break;
-            case 6:
-                cout <<">>>Exiting" << endl;
+            case 5: {
+                casino.showTopPlayers();
                 break;
+            }
+            case 6: {
+                cout << ">>>Exiting" << endl;
+                casino.updateTopPlayers(player);
+                break;
+            }
+
+            default: cout <<"Not a valid option" << endl;
+                break;
+
         }
     }
 
