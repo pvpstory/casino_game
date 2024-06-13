@@ -8,15 +8,15 @@
     #include <limits>
     #include <fstream>
     #include <algorithm>
-    
-    
-    
+
+
+
     using namespace std;
-    
-    
-    
+
+
+
     class Player {
-    
+
     public:
         Player(string name) : name(name) {
             int lb = 200;
@@ -24,7 +24,7 @@
             srand(time(0));
             money = (rand() % (ub - lb + 1)) + lb;
         }
-    
+
         void changeMoney(int amount){
             money = money + amount;
         }
@@ -34,28 +34,29 @@
         string getName(){
             return name;
         }
-    
-    
+
+
     private:
         string name;
         float money;
     };
-    
+
     class Game{
     public:
+        virtual void play(Player& player) = 0;
         void resultGame(int amount,Player &player){
             if (amount > 0)
                 cout << "Congratulations you won: " << amount << " dollars" << endl;
-    
+
             else if(amount < 0)
                 cout << "Unfortunately you lost: " << amount << " dollars" << endl;
             else
                 cout <<"You didn't win or lose" << endl;
-    
+
             player.changeMoney(amount);
             cout << "Your balance now is: " << player.getMoney() << endl;
         }
-    
+
          int make_bet(Player &player){
             int bet = 0;
             cout << "How much would you like to bet" << endl;
@@ -71,10 +72,10 @@
             cout << "Your bet is " << bet << " dollars" << endl;
             return bet;
         }
-    
-    
-    
-    
+
+
+
+
     };
     class SlotMachine: public Game{
     public:
@@ -83,17 +84,17 @@
             for (const auto& symbol : symbols) {
                 totalWeight += symbol.second;
             }
-    
+
             int randomValue = rand() % totalWeight;
             int cumulativeWeight = 0;
-    
+
             for (const auto& symbol : symbols) {
                 cumulativeWeight += symbol.second;
                 if (randomValue < cumulativeWeight) {
                     return symbol.first;
                 }
             }
-    
+
             return symbols.back().first; // Fallback, should not reach here
         }
         int makespin(){
@@ -139,13 +140,13 @@
             } else {
                 std::cout << "You lose. No matching symbols." << std::endl;
             }
-    
+
             return payout;
         }
-        void play(Player &player){
-    
-    
-    
+        void play(Player &player) override{
+
+
+
             int bet = make_bet(player);
             int b = -1;
             while(b != 0 and player.getMoney() > 0){
@@ -166,7 +167,7 @@
                     cout <<"Not a valid option"<<endl;
                     return;
                 }
-    
+
                 switch(b){
                     case(2): bet = make_bet(player);
                         break;
@@ -182,52 +183,52 @@
                             if (amount == 0){
                                 amount = -bet;
                             }
-    
+
                         resultGame(amount,player);
                         break;
-    
-    
+
+
                 }
-    
-    
-    
+
+
+
             }
         }
     };
     class BlackJack: public Game{
     public:
-            void play(Player &player){ //ace implementation
+            void play(Player &player) override{ //ace implementation
                 int deck[52] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                                 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                                 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
                                 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
                 // 11 - Jack, 12 - Queen, 13 - King, 14 - Ace
-    
+
                 int dealer_hand[2];
                 int player_hand[5] = {0,0,0,0,0};
-    
+
                 int bet;
                 bet = make_bet(player);
-    
+
                 cout << ">>>Starting the round" << endl;
                 cout << ">>>Dealer gives you a card and himself a card" << endl;
-    
+
                 player_hand[0] = random_card(deck);
                 cout << "Your hand: " << player_hand[0] << endl;
-    
+
                 dealer_hand[0] = random_card(deck);
                 cout << "Dealer's hand: " << dealer_hand[0] << endl;
-    
+
                 cout << ">>>Dealer gives you a card and himself a card" << endl;
-    
+
                 player_hand[1] = random_card(deck);
                 cout << "Your hand: " << player_hand[0] << " + " <<player_hand[1] << endl;
-    
+
                 dealer_hand[1] = random_card(deck);
                 cout << "Dealer's hand: " << dealer_hand[0] << " + " <<"Hidden" << endl;
-    
+
                 int sum_hand = player_hand[0] + player_hand[1] + player_hand[2] + player_hand[3] + player_hand[4];
-    
+
                 int current_index = 1;
                 while(sum_hand < 21){
                     current_index++;
@@ -238,7 +239,7 @@
                         cout <<"Not a valid option"<<endl;
                         cin >> answer;
                     }
-    
+
                     if (answer == 'N'){
                         break;
                     }
@@ -246,14 +247,14 @@
                         cout << "Not a valid option" << endl;
                         return;
                     }
-    
+
                     player_hand[current_index] = random_card(deck);
                     sum_hand = player_hand[0] + player_hand[1] + player_hand[2] + player_hand[3] + player_hand[4];
                     cout << "Your hand: " << player_hand[0];
                     for(int i = 1; i <= current_index;i++){
                         cout << " + ";
                         cout << player_hand[i];
-    
+
                     }
                     cout << endl;
                 }
@@ -261,7 +262,7 @@
                 cout << "Dealer's hand: " << dealer_hand[0] << " + " <<dealer_hand[1] << endl;
                 int dealers_sum = dealer_hand[0] + dealer_hand[1];
                 sum_hand = player_hand[0] + player_hand[1] + player_hand[2] + player_hand[3] + player_hand[4];
-    
+
                 int amount;
                 if (sum_hand > 21){
                     cout << "Your hand is over 21, you lost" << endl;
@@ -284,8 +285,8 @@
                     cout << "Unfortunately you lost" <<endl; // delete later
                     amount = -bet;
                 }
-    
-    
+
+
                 resultGame(amount,player);
             };
         int random_card(int deck[]){
@@ -294,30 +295,30 @@
             do{
                 deck_index = rand() % 52;
             }while(deck[deck_index] == 0);
-    
+
             card = deck[deck_index];
             deck[deck_index] = 0;
             return card;
     //        if(card = 14)
     //            /////////////////implemnt
     //            return 0;
-    
+
             if (card > 10){
                 card = 10;
             }
-    
+
             return card;
         }
-    
-    
+
+
     };
-    
+
     class Ruletka: public Game{
     public:
         int choose_number(){
             int number;
             string winning_number;
-    
+
             cout << "What number would you like to bet on(0-36): ";
             cin >> number;
             if (number < 0 or number > 36){
@@ -325,70 +326,70 @@
                 choose_number();
             }
             else{
-    
+
                 return number;
-    
+
             }
-    
+
         }
-    
+
         string choose_property(){
             char property[100];
             string winning_property;
             cout << "Would you like to bet on Even or Odd numbers?(Odd,Even,O,E): ";
             cin >> property;
             // not sure if it works
-    
+
             if (strcmp(property,"O") == 0 || strcmp(property,"Odd") == 0){
                 winning_property = "Odd";
-    
+
             }
             else if(strcmp(property,"E") == 0 || strcmp(property,"Even") == 0){
                 winning_property = "Even";
-    
+
             }
             else{
                 cout << "Your choice isn't Odd,Even or O,E " << endl;
                 choose_property();
             }
             return winning_property;
-    
-    
+
+
         }
-    
+
         string choose_color(){
             char color[4];
             string winning_color;
             cout << "Choose the color(Red,Black,R,B): ";
-    
+
             cin >> color;
             if (strcmp(color,"R") == 0 or strcmp(color,"Red") == 0){
                 winning_color = "Red";
-    
+
             }
             else if(strcmp(color,"B") == 0 or strcmp(color,"Black") == 0){
                 winning_color = "Black";
-    
+
             }
             else{
                 cout << "Your choice isn't Red,Black or R,B " << endl;
                 choose_color();
             }
             return winning_color;
-    
+
         }
-    
-    
-        void play(Player &player){
+
+
+        void play(Player &player) override{
             int winning_number = -1;
             string winning_property = "";
             string winning_color = "";
-    
-    
+
+
             int b = 1;
             cout << "Make your bets" <<endl;
-    
-    
+
+
                 cout <<"0: Exit"<<endl;
                 cout <<"1: Bet on a single number" << endl;
                 cout <<"2: Bet on a color(Red/Black)" <<endl;
@@ -407,8 +408,8 @@
                     cout <<"Not a valid option"<<endl;
                     return;
                 }
-    
-    
+
+
                 switch(b) {
                     case 0:
                         return;
@@ -424,19 +425,19 @@
                         cout << winning_property<<endl;
                         break;
                 }
-    
-    
-    
-    
+
+
+
+
             int bet_amount = make_bet(player);
             int d;
-    
+
             cout << ">>>The Roulete is spinning" << endl;
-    
-    
-    
+
+
+
         int the_winning_number = rand() % 37;
-    
+
         string color;
         string property;
         if ((the_winning_number >= 1 and the_winning_number <= 10) or (the_winning_number >= 19 and the_winning_number <= 28)){
@@ -453,26 +454,26 @@
             if(the_winning_number%2 == 0){
                 color = "Red";
                 property = "Even";
-    
+
             }
             else{
                 color = "Black";
                 property = "Odd";
             }
-    
+
         }
         cout << "The number is: " << the_winning_number << " " << color << endl;
-    
+
         int amount;
         int cof;
         if(winning_number != -1){
             cof = 35;
-    
+
         }
         else{
             cof = 1;
         }
-    
+
             amount = -bet_amount;
             if (b == 1 && winning_number == the_winning_number) {
                 amount = bet_amount * 35;
@@ -482,25 +483,25 @@
                 amount = bet_amount * 1;
             }
         resultGame(amount,player);
-    
+
     }
-    
+
     };
     class Casino {
     private:
         pair<string, float> topPlayers[100];
         int currentSize;
         const string topPlayersFile = "top_players.txt";
-    
+
     public:
         Casino() : currentSize(0) {
             loadTopPlayers();
         }
-    
+
         ~Casino() {
             saveTopPlayers();
         }
-    
+
         void updateTopPlayers(Player &player) {
             if (currentSize < 100) {
                 topPlayers[currentSize++] = {player.getName(), player.getMoney()};
@@ -514,7 +515,7 @@
                 currentSize = 100;
             }
         }
-    
+
         void loadTopPlayers() {
             ifstream file(topPlayersFile);
             string name;
@@ -524,14 +525,14 @@
                 topPlayers[currentSize++] = {name, money};
             }
         }
-    
+
         void saveTopPlayers() {
             ofstream file(topPlayersFile);
             for (int i = 0; i < currentSize; ++i) {
                 file << topPlayers[i].first << " " << topPlayers[i].second << endl;
             }
         }
-    
+
         void showTopPlayers() {
             for (int i = 0; i < currentSize; ++i) {
                 cout << topPlayers[i].first << ": " << topPlayers[i].second << endl;
@@ -544,10 +545,10 @@
         cin >> name;
         Player player(name);
         Casino casino;
-    
+
         //interface
         int b;
-        while(b != 6 || player.getMoney() <= 0){
+        while(b != 6 and(player.getMoney() > 0)){
             cout << "Interface: " << endl;
             cout <<"1: Play BlackJack" << endl;
             cout <<"2: Play Roulette" << endl;
@@ -564,22 +565,32 @@
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 continue; // Skip the rest of the loop and prompt again
             }
-            switch(b){
-                case 1:
-                    BlackJack blackjack;
-                    blackjack.play(player);
+            switch (b) {
+                case 1: {
+                    // Play Blackjack
+                    Game* blackjack = new BlackJack();
+                    blackjack->play(player);
+                    delete blackjack;
                     break;
-                case 2:
-                    Ruletka ruletka;
-                    ruletka.play(player); //something is wrong with memory
+                }
+                case 2: {
+                    // Play Ruletka
+                    Game* ruletka = new Ruletka();
+                    ruletka->play(player);
+                    delete ruletka;
                     break;
-                case 3:
-                    SlotMachine slot;
-                    slot.play(player);
+                }
+                case 3: {
+                    // Play Slot Machine
+                    Game* slot = new SlotMachine();
+                    slot->play(player);
+                    delete slot;
                     break;
-                case 4:
+                }
+                case 4: {
                     cout <<"Your balance: " << player.getMoney() <<endl;
                     break;
+                }
                 case 5: {
                     casino.showTopPlayers();
                     break;
@@ -589,17 +600,14 @@
                     casino.updateTopPlayers(player);
                     break;
                 }
-    
-                default: cout <<"Not a valid option" << endl;
+                default: {
+                    cout <<"Not a valid option" << endl;
                     break;
-    
-            }
-        }
-    
-    
-    
-    
+                }
+            }}
+
+
         return 1;
     }
-    
-    
+
+
