@@ -130,11 +130,9 @@
             cout << endl;
             int payout = 0;
             if (slotLine[0] == slotLine[1] && slotLine[1] == slotLine[2]) {
-                // Three of a kind
                 payout = payouts[slotLine[0]] * payouts[slotLine[0]] * payouts[slotLine[0]];
                 std::cout << "You win! Three " << slotLine[0] << "s in a line. Payout: " << payout << "x" << std::endl;
             } else if (slotLine[0] == slotLine[1]) {
-                // First two symbols match
                 payout = payouts[slotLine[0]];
                 std::cout << "You win! The first two symbols are the same: " << slotLine[0] << ". Payout: " << payout+1<< "x" << std::endl;
             } else {
@@ -214,18 +212,48 @@
                 cout << ">>>Dealer gives you a card and himself a card" << endl;
 
                 player_hand[0] = random_card(deck);
+
                 cout << "Your hand: " << player_hand[0] << endl;
+
 
                 dealer_hand[0] = random_card(deck);
                 cout << "Dealer's hand: " << dealer_hand[0] << endl;
 
                 cout << ">>>Dealer gives you a card and himself a card" << endl;
+                if (player_hand[0] == 14){
+                    cout << "Would you like your 'As' to be 1 or 11?" << endl;
+                    int answer;
+                    cin >> answer;
+                    if (answer != 1 and answer != 11){
+                        cout << "Not an option" <<endl;
+                        return;
+                    }
+                    player_hand[0] = answer;
+
+                }
 
                 player_hand[1] = random_card(deck);
                 cout << "Your hand: " << player_hand[0] << " + " <<player_hand[1] << endl;
+                if (player_hand[1] == 14){
+                    cout << "Would you like your 'As' to be 1 or 11?" << endl;
+                    int answer;
+                    cin >> answer;
+                    if (answer != 1 and answer != 11){
+                        cout << "Not an option" <<endl;
+                        return;
+                    }
+                    player_hand[1] = answer;
+
+                }
 
                 dealer_hand[1] = random_card(deck);
                 cout << "Dealer's hand: " << dealer_hand[0] << " + " <<"Hidden" << endl;
+                if (dealer_hand[0] == 14){
+                    dealer_hand[0] = 11;
+                }
+                if (dealer_hand[1] == 14){
+                    dealer_hand[1] = 11;
+                }
 
                 int sum_hand = player_hand[0] + player_hand[1] + player_hand[2] + player_hand[3] + player_hand[4];
 
@@ -235,7 +263,7 @@
                     char answer;
                     cout << "Would you like another card?: Y/N" << endl;
                     cin >> answer;
-                    if(answer != 'Y' or answer !='N'){
+                    if(answer != 'Y' and answer !='N'){
                         cout <<"Not a valid option"<<endl;
                         cin >> answer;
                     }
@@ -249,6 +277,17 @@
                     }
 
                     player_hand[current_index] = random_card(deck);
+                    if (player_hand[current_index] == 14){
+                        cout << "Would you like your 'As' to be 1 or 11?" << endl;
+                        int answer;
+                        cin >> answer;
+                        if (answer != 1 or answer != 11){
+                            cout << "Not an option" <<endl;
+                            return;
+                        }
+                        player_hand[current_index] = answer;
+
+                    }
                     sum_hand = player_hand[0] + player_hand[1] + player_hand[2] + player_hand[3] + player_hand[4];
                     cout << "Your hand: " << player_hand[0];
                     for(int i = 1; i <= current_index;i++){
@@ -298,6 +337,9 @@
 
             card = deck[deck_index];
             deck[deck_index] = 0;
+            if(card == 11 or card==12 or card == 13){
+                card = 10;
+            }
             return card;
     //        if(card = 14)
     //            /////////////////implemnt
@@ -540,7 +582,7 @@
         }
     };
     int main() {
-        cout << "Hello, Brother!, what's your name" << endl;
+        cout << "What's your name" << endl;
         string name;
         cin >> name;
         Player player(name);
