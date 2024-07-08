@@ -28,22 +28,27 @@ Payouts are based on the symbols that line up on the reels.
 3. Features
 
 Player Class: Manages player information including name and money.
+
 Game Class: Base class for all games, managing common functionalities like betting.
+
 SlotMachine Class: Derived from Game, simulates a slot machine game.
+
 BlackJack Class: Derived from Game, simulates a blackjack game.
+
 Ruletka Class: Derived from Game, simulates a roulette game.
+
 Casino Class: Manages top players and their balances.
 
 4. Dependencies
 
 This project uses standard C++ libraries:
-<iostream>
-<string>
-<vector>
-<unordered_map>
-<limits>
-<fstream>
-<algorithm>
+<iostream>,
+<string>,
+<vector>,
+<unordered_map>,
+<limits>,
+<fstream>,
+<algorithm>,
 
 5. How to Play
 
