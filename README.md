@@ -39,18 +39,8 @@ Ruletka Class: Derived from Game, simulates a roulette game.
 
 Casino Class: Manages top players and their balances.
 
-4. Dependencies
 
-This project uses standard C++ libraries:
-<iostream>,
-<string>,
-<vector>,
-<unordered_map>,
-<limits>,
-<fstream>,
-<algorithm>,
-
-5. How to Play
+4. How to Play
 
 Run the compiled executable.
 Enter your name when prompted.
@@ -61,9 +51,11 @@ Choose a game from the interface:
 4: Show your balance
 5: Show top players
 6: Exit
+
 Follow the game-specific instructions to place bets and play.
 
-6. File Structure
+5. File Structure
 
 main.cpp: The main source file containing all game logic and classes.
+
 top_players.txt: File used to store the top players' names and balances.
