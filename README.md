@@ -1,15 +1,15 @@
-Casino Simulation Game
+# Casino Simulation Game
 
 This project simulates a casino environment where players can engage in various games such as BlackJack, Roulette, and Slot Machine. Players can bet, win, or lose money while playing these games. The casino keeps track of top players and their balances.
 
 
-1. Getting Started
+## 1. Getting Started
 
 
 Prerequisites:
-A C++ compiler (GCC, Clang, etc.)
+- A C++ compiler (GCC, Clang, etc.)
 
-2. Game Rules
+## 2. Game Rules
 
 BlackJack
 Players are dealt two cards and aim to get a total value of 21 without exceeding it.
@@ -25,22 +25,22 @@ Slot Machine
 Players bet an amount and spin the slot machine.
 Payouts are based on the symbols that line up on the reels.
 
-3. Features
+## 3. Features
 
-Player Class: Manages player information including name and money.
+- Player Class: Manages player information including name and money.
 
-Game Class: Base class for all games, managing common functionalities like betting.
+- Game Class: Base class for all games, managing common functionalities like betting.
 
-SlotMachine Class: Derived from Game, simulates a slot machine game.
+- SlotMachine Class: Derived from Game, simulates a slot machine game.
 
-BlackJack Class: Derived from Game, simulates a blackjack game.
+- BlackJack Class: Derived from Game, simulates a blackjack game.
 
-Ruletka Class: Derived from Game, simulates a roulette game.
+- Ruletka Class: Derived from Game, simulates a roulette game.
 
-Casino Class: Manages top players and their balances.
+- Casino Class: Manages top players and their balances.
 
 
-4. How to Play
+## 4. How to Play
 
 Run the compiled executable.
 Enter your name when prompted.
@@ -54,8 +54,7 @@ Choose a game from the interface:
 
 Follow the game-specific instructions to place bets and play.
 
-5. File Structure
+## 5. File Structure
 
-main.cpp: The main source file containing all game logic and classes.
-
-top_players.txt: File used to store the top players' names and balances.
+- main.cpp: The main source file containing all game logic and classes.
+- top_players.txt: File used to store the top players' names and balances.
