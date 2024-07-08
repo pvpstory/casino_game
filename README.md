@@ -16,9 +16,11 @@ Players are dealt two cards and aim to get a total value of 21 without exceeding
 Players can choose to 'hit' (take another card) or 'stand' (end their turn).
 The dealer also takes cards, but must stand on 17 or higher.
 Aces can count as 1 or 11, face cards are worth 10, and other cards are worth their face value.
+
 Roulette
 Players can bet on a single number, a color (Red/Black), or whether the number is odd or even.
 If the player's bet matches the outcome, they win a payout based on the type of bet.
+
 Slot Machine
 Players bet an amount and spin the slot machine.
 Payouts are based on the symbols that line up on the reels.
