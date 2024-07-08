@@ -2,15 +2,6 @@ Casino Simulation Game
 
 This project simulates a casino environment where players can engage in various games such as BlackJack, Roulette, and Slot Machine. Players can bet, win, or lose money while playing these games. The casino keeps track of top players and their balances.
 
-Table of Contents
-
-1. Getting Started
-2. Game Rules
-3. Features
-4. Dependencies
-5. How to Play
-6. File Structure
-
 
 1. Getting Started
 
