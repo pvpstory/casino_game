@@ -6,7 +6,7 @@ This project simulates a casino environment where players can engage in various 
 1. Getting Started
 
 
-Prerequisites
+Prerequisites:
 A C++ compiler (GCC, Clang, etc.)
 
 2. Game Rules
